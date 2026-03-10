@@ -1,0 +1,24 @@
+# Asymmetric Cross-Modal Attention - VQA Implementation
+# PyTorch and vision
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Transformers (RoBERTa, tokenizers)
+transformers>=4.30.0
+
+# Data and images
+Pillow>=9.0.0
+numpy>=1.24.0
+pandas>=2.0.0
+h5py>=3.8.0
+
+# Visualization and analysis
+matplotlib>=3.7.0
+seaborn>=0.12.0
+tqdm>=4.65.0
+
+# Metrics and evaluation
+scikit-learn>=1.2.0
+
+# Optional: interactive demo
+# gradio>=4.0.0

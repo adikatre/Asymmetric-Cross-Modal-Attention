@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Data and results
+data/images/
+results/checkpoints/*.pt
+results/figures/*
+!results/figures/.gitkeep
+results/metrics/*.json
+*.h5
+
+# IDE and env
+.venv/
+venv/
+.env
+.idea/
+.cursor/
+
+# Jupyter
+.ipynb_checkpoints/
