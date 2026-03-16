@@ -1,4 +1,4 @@
-# Detailed Project Proposal: Implementing Asymmetric Cross-Modal Attention
+# Project Proposal: Implementing Asymmetric Cross-Modal Attention
 
 ## A Step-by-Step Implementation Guide for High School Students
 
