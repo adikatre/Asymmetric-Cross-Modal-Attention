@@ -1,7 +1,5 @@
 # Project Proposal: Implementing Asymmetric Cross-Modal Attention
 
-## Step-by-Step Implementation Plan
-
 ---
 
 ## Table of Contents
