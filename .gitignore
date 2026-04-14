@@ -28,3 +28,4 @@ venv/
 .ipynb_checkpoints/
 
 data/
+*.zip
