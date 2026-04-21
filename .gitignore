@@ -28,3 +28,7 @@ venv/
 .ipynb_checkpoints/
 
 data/
+*.zip
+.claude/
+
+unfrozen_results/checkpoints
