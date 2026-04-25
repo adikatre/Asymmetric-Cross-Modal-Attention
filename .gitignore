@@ -25,6 +25,10 @@ venv/
 .vscode/
 
 # Jupyter
-.ipynb_checkpoints/
+.ipynb_checkpoints/*.pt
 
 data/
+*.zip
+.claude/
+
+unfrozen_results/checkpoints/*.pt
