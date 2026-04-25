@@ -31,4 +31,4 @@ data/
 *.zip
 .claude/
 
-unfrozen_results/checkpoints
+unfrozen_results/checkpoints/*.pt
