@@ -1,0 +1,8 @@
+torch
+torchvision
+transformers
+open_clip_torch
+matplotlib
+tqdm
+Pillow
+h5py
