@@ -23,22 +23,22 @@
 ```mermaid
 graph LR
     subgraph "Phase 1-2"
-        A["📚 Learn &<br/>Setup"] --> B["📊 Build Data<br/>Pipeline"]
-        B --> C["🏗️ Implement<br/>Baselines"]
+        A["Learn &<br/>Setup"] --> B["Build Data<br/>Pipeline"]
+        B --> C["Implement<br/>Baselines"]
     end
 
     subgraph "Phase 3"
-        C --> D["⚡ Build Asymmetric<br/>Cross-Attention"]
+        C --> D["Build Asymmetric<br/>Cross-Attention"]
     end
 
     subgraph "Phase 4"
-        D --> E["🏋️ Train All<br/>4 Models"]
-        E --> F["📏 Evaluate &<br/>Compare"]
+        D --> E["Train All<br/>4 Models"]
+        E --> F["Evaluate &<br/>Compare"]
     end
 
     subgraph "Phase 5-6"
-        F --> G["🔍 Visualize<br/>Attention Maps"]
-        G --> H["📝 Write Report<br/>& Present"]
+        F --> G["Visualize<br/>Attention Maps"]
+        G --> H["Write Report<br/>& Present"]
     end
 
     style A fill:#4A90D9,stroke:#2C5F8A,color:#fff
@@ -83,11 +83,11 @@ Since the full VQA dataset is very large (~1.1M questions), we will use a **subs
 
 ```mermaid
 graph TD
-    DL["📥 Download from<br/>visualqa.org/download.html"]
+    DL["Download from<br/>visualqa.org/download.html"]
 
-    DL --> IMGS["🖼️ Images (MS-COCO)"]
-    DL --> QS["❓ Questions (JSON)"]
-    DL --> ANS["✅ Answers (JSON)"]
+    DL --> IMGS["Images (MS-COCO)"]
+    DL --> QS["Questions (JSON)"]
+    DL --> ANS["Answers (JSON)"]
 
     IMGS --> TRAIN_IMG["train2014/<br/>~13 GB"]
     IMGS --> VAL_IMG["val2014/<br/>~6 GB"]
@@ -98,14 +98,14 @@ graph TD
     ANS --> TRAIN_A["train_answers.json<br/>~28 MB"]
     ANS --> VAL_A["val_answers.json<br/>~15 MB"]
 
-    TRAIN_IMG --> ORG["📂 Organize into<br/>data/ directory"]
+    TRAIN_IMG --> ORG["ganize into<br/>data/ directory"]
     VAL_IMG --> ORG
     TRAIN_Q --> ORG
     VAL_Q --> ORG
     TRAIN_A --> ORG
     VAL_A --> ORG
 
-    ORG --> READY["✅ Ready for<br/>DataLoader"]
+    ORG --> READY["Ready for<br/>DataLoader"]
 
     style DL fill:#4A90D9,stroke:#2C5F8A,color:#fff
     style IMGS fill:#5BA5D9,stroke:#2C5F8A,color:#fff
@@ -146,8 +146,8 @@ If VQA v2.0 is too large for your setup:
 ```mermaid
 graph TD
     subgraph Inputs
-        IMG["🖼️ Image Input<br/>(VQA Image)"]
-        TXT["📝 Text Input<br/>(Question)"]
+        IMG["Image Input<br/>(VQA Image)"]
+        TXT["Text Input<br/>(Question)"]
     end
 
     subgraph Encoders
@@ -164,15 +164,15 @@ graph TD
     TE -->|"b ∈ ℝ^(M×d)"| CA2
 
     subgraph Asymmetric Cross-Modal Fusion
-        CA1["🔀 Cross-Attention Block 1<br/>Q = a, K = b, V = b<br/><i>Image attends to Text</i>"]
-        CA2["🔀 Cross-Attention Block 2<br/>Q = b, K = a, V = a<br/><i>Text attends to Image</i>"]
+        CA1["Cross-Attention Block 1<br/>Q = a, K = b, V = b<br/><i>Image attends to Text</i>"]
+        CA2["Cross-Attention Block 2<br/>Q = b, K = a, V = a<br/><i>Text attends to Image</i>"]
     end
 
     CA1 -->|"a←b"| FUSE
     CA2 -->|"b←a"| FUSE
 
     FUSE["⊕ Fusion Layer<br/>z = [a←b ; b←a]"]
-    FUSE --> CLS["🎯 Answer Classifier<br/>MLP → Softmax → Top-K answers"]
+    FUSE --> CLS["Answer Classifier<br/>MLP → Softmax → Top-K answers"]
 
     style IMG fill:#4A90D9,stroke:#2C5F8A,color:#fff
     style TXT fill:#D94A7A,stroke:#8A2C4F,color:#fff
@@ -503,7 +503,7 @@ for epoch in range(config["epochs"]):
 
 ```mermaid
 graph TD
-    VP["🧪 Validation Plan"]
+    VP["Validation Plan"]
 
     VP --> SPLIT["1. Train / Val / Test Split"]
     SPLIT --> S1["Training: 80%"]
@@ -567,13 +567,13 @@ Below is a side-by-side view of the two fusion methods being compared.
 
 ```mermaid
 graph LR
-    I3["🖼️ Image<br/>features"] --> SCA["🔀 Shared<br/>Cross-Attention<br/>(same weights<br/>both directions)"]
-    T3["📝 Text<br/>features"] --> SCA
+    I3["Image<br/>features"] --> SCA["Shared<br/>Cross-Attention<br/>(same weights<br/>both directions)"]
+    T3["Text<br/>features"] --> SCA
     SCA --> IA["Image-<br/>attended"]
     SCA --> TA["Text-<br/>attended"]
     IA --> F3["⊕ Fuse"]
     TA --> F3
-    F3 --> A3["🎯 Answer"]
+    F3 --> A3["Answer"]
 
     style I3 fill:#4A90D9,stroke:#2C5F8A,color:#fff
     style T3 fill:#D94A7A,stroke:#8A2C4F,color:#fff
@@ -590,13 +590,13 @@ graph LR
 
 ```mermaid
 graph LR
-    I5["🖼️ Image<br/>features"] --> CA5A["🔀 Cross-Attn Block 1<br/>Q=img, K=txt, V=txt"]
-    T5["📝 Text<br/>features"] --> CA5A
-    I5 --> CA5B["🔀 Cross-Attn Block 2<br/>Q=txt, K=img, V=img"]
+    I5["Image<br/>features"] --> CA5A["Cross-Attn Block 1<br/>Q=img, K=txt, V=txt"]
+    T5["Text<br/>features"] --> CA5A
+    I5 --> CA5B["Cross-Attn Block 2<br/>Q=txt, K=img, V=img"]
     T5 --> CA5B
     CA5A -->|"a←b"| F5["⊕ Fuse"]
     CA5B -->|"b←a"| F5
-    F5 --> A5["🎯 Answer"]
+    F5 --> A5["Answer"]
 
     style I5 fill:#4A90D9,stroke:#2C5F8A,color:#fff
     style T5 fill:#D94A7A,stroke:#8A2C4F,color:#fff
@@ -613,19 +613,19 @@ graph LR
 
 ```mermaid
 graph TD
-    DATA["📊 VQA v2.0 Dataset<br/>(same train/val/test split)"]
+    DATA["VQA v2.0 Dataset<br/>(same train/val/test split)"]
 
     DATA --> M1["Symmetric<br/>Cross-Attn"]
     DATA --> M2["Asymmetric<br/>Cross-Attn"]
 
-    M1 --> EVAL["📏 Evaluate Both on Same Test Set"]
+    M1 --> EVAL["Evaluate Both on Same Test Set"]
     M2 --> EVAL
 
-    EVAL --> QUANT["📊 Quantitative<br/>Comparison Table"]
-    EVAL --> QUAL["🔍 Qualitative<br/>Attention Maps"]
-    EVAL --> ABL["🧪 Ablation<br/>Studies"]
+    EVAL --> QUANT["Quantitative<br/>Comparison Table"]
+    EVAL --> QUAL["Qualitative<br/>Attention Maps"]
+    EVAL --> ABL["Ablation<br/>Studies"]
 
-    QUANT --> REPORT["📝 Final Report"]
+    QUANT --> REPORT["Final Report"]
     QUAL --> REPORT
     ABL --> REPORT
 
