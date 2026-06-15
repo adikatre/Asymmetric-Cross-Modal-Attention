@@ -1,0 +1,28 @@
+[
+  {
+    "epoch": 1,
+    "train_loss": 0.6948997378349304,
+    "train_acc": 0.0,
+    "val_loss": 0.6994725513458252,
+    "val_vqa_acc": 0.0,
+    "val_vqa_acc_yesno": 0.0,
+    "val_vqa_acc_number": 0.0,
+    "val_vqa_acc_other": 0.0,
+    "val_vqa_acc_live": 0.0,
+    "peak_mem_gb": 0.0,
+    "elapsed_s": 2624.2
+  },
+  {
+    "epoch": 2,
+    "train_loss": 0.6615938401222229,
+    "train_acc": 0.0,
+    "val_loss": 0.6993891787528992,
+    "val_vqa_acc": 0.0,
+    "val_vqa_acc_yesno": 0.0,
+    "val_vqa_acc_number": 0.0,
+    "val_vqa_acc_other": 0.0,
+    "val_vqa_acc_live": 0.0,
+    "peak_mem_gb": 0.0,
+    "elapsed_s": 2520.5
+  }
+]

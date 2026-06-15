@@ -1,0 +1,98 @@
+[
+  {
+    "epoch": 1,
+    "train_loss": 0.6638291478157043,
+    "train_acc": 0.1,
+    "val_loss": 0.6958634619712829,
+    "val_vqa_acc": 0.033333334326744075,
+    "val_vqa_acc_yesno": 0.0,
+    "val_vqa_acc_number": 0.28011205316591664,
+    "val_vqa_acc_other": 0.0,
+    "val_vqa_acc_live": 0.033333334326744075,
+    "elapsed_s": 1781.8
+  },
+  {
+    "epoch": 2,
+    "train_loss": 0.36400110137462616,
+    "train_acc": 0.0,
+    "val_loss": 0.6954458427429199,
+    "val_vqa_acc": 0.033333334326744075,
+    "val_vqa_acc_yesno": 0.0,
+    "val_vqa_acc_number": 0.28011205316591664,
+    "val_vqa_acc_other": 0.0,
+    "val_vqa_acc_live": 0.033333334326744075,
+    "elapsed_s": 1748.3
+  },
+  {
+    "epoch": 3,
+    "train_loss": 0.08273469223082065,
+    "train_acc": 0.2,
+    "val_loss": 0.694849624156952,
+    "val_vqa_acc": 0.033333334326744075,
+    "val_vqa_acc_yesno": 0.0,
+    "val_vqa_acc_number": 0.28011205316591664,
+    "val_vqa_acc_other": 0.0,
+    "val_vqa_acc_live": 0.033333334326744075,
+    "elapsed_s": 1711.7
+  },
+  {
+    "epoch": 4,
+    "train_loss": 0.0168236965239048,
+    "train_acc": 1.0,
+    "val_loss": 0.6941620345115662,
+    "val_vqa_acc": 0.033333334326744075,
+    "val_vqa_acc_yesno": 0.0,
+    "val_vqa_acc_number": 0.28011205316591664,
+    "val_vqa_acc_other": 0.0,
+    "val_vqa_acc_live": 27.766666901111602,
+    "elapsed_s": 1732.8
+  },
+  {
+    "epoch": 5,
+    "train_loss": 0.008229756604880095,
+    "train_acc": 2.0,
+    "val_loss": 0.693431631565094,
+    "val_vqa_acc": 0.033333334326744075,
+    "val_vqa_acc_yesno": 0.0,
+    "val_vqa_acc_number": 0.28011205316591664,
+    "val_vqa_acc_other": 0.0,
+    "val_vqa_acc_live": 27.766666901111602,
+    "elapsed_s": 1716.1
+  },
+  {
+    "epoch": 2,
+    "train_loss": 0.26186825872319086,
+    "train_acc": 0.0,
+    "val_loss": 0.6950916013036456,
+    "val_vqa_acc": 0.2095238072531564,
+    "val_vqa_acc_yesno": 0.0,
+    "val_vqa_acc_number": 1.6081872216442175,
+    "val_vqa_acc_other": 0.0,
+    "val_vqa_acc_live": 0.01904761961528233,
+    "elapsed_s": 2996.9
+  },
+  {
+    "epoch": 3,
+    "train_loss": 0.028683919577726296,
+    "train_acc": 0.8571428571428572,
+    "val_loss": 0.6939488456589835,
+    "val_vqa_acc": 0.2095238072531564,
+    "val_vqa_acc_yesno": 0.0,
+    "val_vqa_acc_number": 1.6081872216442175,
+    "val_vqa_acc_other": 0.0,
+    "val_vqa_acc_live": 25.238095705849783,
+    "elapsed_s": 3056.4
+  },
+  {
+    "epoch": 4,
+    "train_loss": 0.013607373615460737,
+    "train_acc": 1.2571428571428571,
+    "val_loss": 0.6927217869758606,
+    "val_vqa_acc": 0.2095238072531564,
+    "val_vqa_acc_yesno": 0.0,
+    "val_vqa_acc_number": 1.6081872216442175,
+    "val_vqa_acc_other": 0.0,
+    "val_vqa_acc_live": 26.209524263654437,
+    "elapsed_s": 2999.4
+  }
+]

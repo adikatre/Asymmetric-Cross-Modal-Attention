@@ -33,3 +33,6 @@ data/
 
 unfrozen_results/checkpoints/*.pt
 results_old/
+
+results_final_s42/checkpoints
+results_generative_old/checkpoints
