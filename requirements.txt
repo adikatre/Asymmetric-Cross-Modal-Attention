@@ -6,3 +6,7 @@ matplotlib
 tqdm
 Pillow
 h5py
+numpy
+sentencepiece
+timm
+jupyter

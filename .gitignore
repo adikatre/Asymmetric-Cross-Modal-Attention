@@ -3,36 +3,47 @@ __pycache__/
 *.py[cod]
 *.egg-info/
 .eggs/
-dist/
 build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
-# Data and results
-data/images/
-data/questions/
-data/answers/
-results/checkpoints/*.pt
-results/figures/*
-!results/figures/.gitkeep
-results/metrics/*.json
-*.h5
-
-# IDE and env
+# Environments and local configuration
 .venv/
 venv/
 .env
+.env.*
+!.env.example
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Project datasets and generated artifacts
+/data/
+/outputs/
+*.h5
+*.hdf5
+*.pt
+*.pth
+*.ckpt
+*.zip
+
+# Legacy result paths (new runs belong under outputs/)
+/RESULTS/
+/results/
+/results_*/
+/frozen_results/
+/unfrozen_results/
+
+# Editors and local agents
 .idea/
 .cursor/
 .vscode/
-
-# Jupyter
-.ipynb_checkpoints/*.pt
-
-data/
-*.zip
+.codex/
+.agents/
 .claude/
 
-unfrozen_results/checkpoints/*.pt
-results_old/
-
-results_final_s42/checkpoints
-results_generative_old/checkpoints
+# Operating system files
+.DS_Store
+Thumbs.db

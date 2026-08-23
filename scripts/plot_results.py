@@ -18,6 +18,13 @@ def load_history(path: str | Path) -> list[dict]:
         return json.load(f)
 
 
+def _find_metric(history: list[dict], *candidates: str) -> str | None:
+    """Return the first metric name present in a history."""
+    if not history:
+        return None
+    return next((key for key in candidates if key in history[0]), None)
+
+
 def plot_training_curves(
     histories: dict[str, list[dict]],
     save_path: str | Path | None = None,
@@ -39,20 +46,31 @@ def plot_training_curves(
                 linestyle="--", label=f"{name} val",
             )
 
-        axes[1].plot(epochs, [h["train_acc"] for h in hist], label=f"{name} train")
-        axes[1].plot(
-            epochs, [h["val_top1"] for h in hist],
-            linestyle="--", label=f"{name} val",
-        )
+        train_acc_key = _find_metric(hist, "train_acc")
+        val_acc_key = _find_metric(hist, "val_top1", "val_vqa_acc")
+        top5_key = _find_metric(hist, "val_top5", "val_vqa_acc_top1000")
 
-        axes[2].plot(epochs, [h["val_top5"] for h in hist], label=name)
+        if train_acc_key:
+            axes[1].plot(
+                epochs, [h[train_acc_key] for h in hist], label=f"{name} train",
+            )
+        if val_acc_key:
+            axes[1].plot(
+                epochs, [h[val_acc_key] for h in hist],
+                linestyle="--", label=f"{name} val",
+            )
+        if top5_key:
+            axes[2].plot(epochs, [h[top5_key] for h in hist], label=name)
 
     axes[0].set(xlabel="Epoch", ylabel="Loss", title="Loss")
     axes[0].legend()
     axes[1].set(xlabel="Epoch", ylabel="Accuracy (%)", title="Top-1 Accuracy")
     axes[1].legend()
-    axes[2].set(xlabel="Epoch", ylabel="Accuracy (%)", title="Top-5 Accuracy")
-    axes[2].legend()
+    if axes[2].lines:
+        axes[2].set(xlabel="Epoch", ylabel="Accuracy (%)", title="Top-5 Accuracy")
+        axes[2].legend()
+    else:
+        axes[2].set_visible(False)
 
     fig.tight_layout()
     if save_path:
@@ -73,7 +91,17 @@ def plot_comparison_bar(
         save_path: Optional file path to save the figure.
     """
     if metrics is None:
-        metrics = ["val_top1", "val_top5"]
+        available = {key for model_results in results.values() for key in model_results}
+        if "val_top1" in available:
+            metrics = ["val_top1"]
+            if "val_top5" in available:
+                metrics.append("val_top5")
+        elif "val_vqa_acc" in available:
+            metrics = ["val_vqa_acc"]
+            if "val_vqa_acc_top1000" in available:
+                metrics.append("val_vqa_acc_top1000")
+        else:
+            metrics = sorted(available)
 
     model_names = list(results.keys())
     n_models = len(model_names)
