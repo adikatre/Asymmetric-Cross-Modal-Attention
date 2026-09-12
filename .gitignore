@@ -30,11 +30,7 @@ venv/
 *.zip
 
 # Legacy result paths (new runs belong under outputs/)
-/RESULTS/
-/results/
-/results_*/
-/frozen_results/
-/unfrozen_results/
+artifacts/
 
 # Editors and local agents
 .idea/
