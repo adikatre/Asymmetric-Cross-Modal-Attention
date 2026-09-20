@@ -75,7 +75,5 @@ EvalAI exports. In summary:
 - `metrics/` contains configuration fingerprints, histories, per-seed summaries,
   validation predictions, and aggregate reports.
 - `figures/` contains training curves and diagnostic visualizations.
-- No `.pt`, `.pth`, or `.ckpt` model checkpoints are committed.
-- Bulky test prediction JSON files are excluded; their validation metadata and saved
-  EvalAI score records are retained.
+- EvalAI score records are retained.
 
