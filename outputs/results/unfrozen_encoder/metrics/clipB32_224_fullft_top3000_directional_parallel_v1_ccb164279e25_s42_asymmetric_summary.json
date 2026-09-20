@@ -1,0 +1,26 @@
+{
+  "seed": 42,
+  "model_type": "asymmetric",
+  "run_name": "clipB32_224_fullft_top3000_directional_parallel_v1_ccb164279e25_s42_asymmetric",
+  "config_sha256": "ccb164279e254c0f7a46f9d9e31c2937eb58ea72230e5ba63d671995ec97357a",
+  "metric_version": "vqa_official_leave_one_out_v1",
+  "epochs_completed": 12,
+  "stopped_early": false,
+  "best_epoch": 12,
+  "best_subset_vqa_acc": 66.35499977111816,
+  "full_val_metrics": {
+    "val_loss": 0.0010779043838388424,
+    "val_vqa_acc": 65.61599034259442,
+    "val_vqa_acc_top1000": 64.91849931271852
+  },
+  "full_val_questions": 214354,
+  "training_gpu_hours": 1.8149237610538875,
+  "evaluation_gpu_hours": 0.032153963720833824,
+  "checkpoint": "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/output/checkpoints/clipB32_224_fullft_top3000_directional_parallel_v1_ccb164279e25_s42_asymmetric_best.pt",
+  "predictions": "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/output/metrics/clipB32_224_fullft_top3000_directional_parallel_v1_ccb164279e25_s42_asymmetric_val_predictions.npz",
+  "runtime": {
+    "gpu": "NVIDIA A100-SXM4-40GB",
+    "torch_version": "2.14.0+cu130",
+    "transformers_version": "5.17.0"
+  }
+}

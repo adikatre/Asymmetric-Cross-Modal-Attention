@@ -1,0 +1,32 @@
+{
+  "config_sha256": "ccb164279e254c0f7a46f9d9e31c2937eb58ea72230e5ba63d671995ec97357a",
+  "runtime": {
+    "gpu": "NVIDIA A100-SXM4-40GB",
+    "torch_version": "2.14.0+cu130",
+    "transformers_version": "5.17.0"
+  },
+  "models": {
+    "symmetric_matched": {
+      "train_samples_per_s": 691.5179460305321,
+      "val_samples_per_s": 909.0035964473659,
+      "checkpoint_seconds": 3.2610121420002542,
+      "epoch_seconds": 645.0490594518647,
+      "full_val_seconds": 235.8120483106491,
+      "total_params": 221259704,
+      "fusion_params": 6306816,
+      "attention_calls": 4
+    },
+    "asymmetric": {
+      "train_samples_per_s": 752.1811597290882,
+      "val_samples_per_s": 911.2756609352865,
+      "checkpoint_seconds": 3.3678534629943897,
+      "epoch_seconds": 594.440586882421,
+      "full_val_seconds": 235.22410307765497,
+      "total_params": 221259704,
+      "fusion_params": 6306816,
+      "attention_calls": 2
+    }
+  },
+  "elapsed_s": 213.07188679499814,
+  "projected_campaign_hours": 12.787426589499777
+}

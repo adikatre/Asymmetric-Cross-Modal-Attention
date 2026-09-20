@@ -1,0 +1,119 @@
+{
+  "run_tag": "clipB32_224_frozen_top3000_directional_parallel_v1_8d4983bd4bfe",
+  "config_sha256": "8d4983bd4bfe2bbf203de6d1d38695a3fe801efa725277cd62e81742eea052df",
+  "metric_version": "vqa_official_leave_one_out_v1",
+  "gpu": "NVIDIA A100-SXM4-40GB",
+  "torch_version": "2.14.0+cu130",
+  "transformers_version": "5.17.0",
+  "seeds_requested": [
+    7,
+    42,
+    123
+  ],
+  "seeds_completed": [
+    7,
+    42,
+    123
+  ],
+  "full_val_questions": 214354,
+  "paired_results": [
+    {
+      "seed": 7,
+      "symmetric_vqa_acc": 59.498539485436844,
+      "asymmetric_vqa_acc": 59.8632170126578,
+      "delta_pp": 0.36467752722095526,
+      "image_bootstrap_95ci_pp": [
+        0.2232487769147492,
+        0.5096884736926124
+      ]
+    },
+    {
+      "seed": 42,
+      "symmetric_vqa_acc": 59.211771034185126,
+      "asymmetric_vqa_acc": 59.90828275424721,
+      "delta_pp": 0.6965117200620838,
+      "image_bootstrap_95ci_pp": [
+        0.54903104276647,
+        0.8561845479857253
+      ]
+    },
+    {
+      "seed": 123,
+      "symmetric_vqa_acc": 59.152896570416594,
+      "asymmetric_vqa_acc": 59.53842703095332,
+      "delta_pp": 0.385530460536728,
+      "image_bootstrap_95ci_pp": [
+        0.22444844268875971,
+        0.5438559593672484
+      ]
+    }
+  ],
+  "mean_delta_pp": 0.48223990260658905,
+  "std_delta_pp": 0.18585752614228104,
+  "asymmetric_higher_mean": true,
+  "uncertainty_note": "Image bootstrap intervals are conditional on each seed's checkpoints; they do not measure training-seed uncertainty.",
+  "comparison_note": "Dedicated directional blocks versus two averaged shared experts, at equal parameters; attention calls are 2 versus 4.",
+  "models": {
+    "symmetric_matched": {
+      "mean_full_val_vqa_acc": 59.287735696679526,
+      "std_full_val_vqa_acc": 0.1849195193505525,
+      "selected_for_visualization_and_export": {
+        "seed": 7,
+        "model_type": "symmetric_matched",
+        "run_name": "clipB32_224_frozen_top3000_directional_parallel_v1_8d4983bd4bfe_s7_symmetric_matched",
+        "config_sha256": "8d4983bd4bfe2bbf203de6d1d38695a3fe801efa725277cd62e81742eea052df",
+        "metric_version": "vqa_official_leave_one_out_v1",
+        "epochs_completed": 12,
+        "stopped_early": false,
+        "best_epoch": 12,
+        "best_subset_vqa_acc": 60.61900146484375,
+        "full_val_metrics": {
+          "val_loss": 0.0011641738501139821,
+          "val_vqa_acc": 59.498539485436844,
+          "val_vqa_acc_top1000": 59.12593166469806
+        },
+        "full_val_questions": 214354,
+        "training_gpu_hours": 1.0920221351394461,
+        "evaluation_gpu_hours": 0.036771434177777944,
+        "checkpoint": "/mnt/vqa-data/work/runs/frozen-gcp-20260913T163839Z/output/checkpoints/clipB32_224_frozen_top3000_directional_parallel_v1_8d4983bd4bfe_s7_symmetric_matched_best.pt",
+        "predictions": "/mnt/vqa-data/work/runs/frozen-gcp-20260913T163839Z/output/metrics/clipB32_224_frozen_top3000_directional_parallel_v1_8d4983bd4bfe_s7_symmetric_matched_val_predictions.npz",
+        "runtime": {
+          "gpu": "NVIDIA A100-SXM4-40GB",
+          "torch_version": "2.14.0+cu130",
+          "transformers_version": "5.17.0"
+        }
+      }
+    },
+    "asymmetric": {
+      "mean_full_val_vqa_acc": 59.76997559928611,
+      "std_full_val_vqa_acc": 0.20178896126640292,
+      "selected_for_visualization_and_export": {
+        "seed": 42,
+        "model_type": "asymmetric",
+        "run_name": "clipB32_224_frozen_top3000_directional_parallel_v1_8d4983bd4bfe_s42_asymmetric",
+        "config_sha256": "8d4983bd4bfe2bbf203de6d1d38695a3fe801efa725277cd62e81742eea052df",
+        "metric_version": "vqa_official_leave_one_out_v1",
+        "epochs_completed": 12,
+        "stopped_early": false,
+        "best_epoch": 12,
+        "best_subset_vqa_acc": 61.177001953125,
+        "full_val_metrics": {
+          "val_loss": 0.0011503874180758156,
+          "val_vqa_acc": 59.90828275424721,
+          "val_vqa_acc_top1000": 59.48575690924096
+        },
+        "full_val_questions": 214354,
+        "training_gpu_hours": 1.091585019536942,
+        "evaluation_gpu_hours": 0.03435118985833267,
+        "checkpoint": "/mnt/vqa-data/work/runs/frozen-gcp-20260913T163839Z/output/checkpoints/clipB32_224_frozen_top3000_directional_parallel_v1_8d4983bd4bfe_s42_asymmetric_best.pt",
+        "predictions": "/mnt/vqa-data/work/runs/frozen-gcp-20260913T163839Z/output/metrics/clipB32_224_frozen_top3000_directional_parallel_v1_8d4983bd4bfe_s42_asymmetric_val_predictions.npz",
+        "runtime": {
+          "gpu": "NVIDIA A100-SXM4-40GB",
+          "torch_version": "2.14.0+cu130",
+          "transformers_version": "5.17.0"
+        }
+      }
+    }
+  },
+  "total_training_gpu_hours": 4.826312296489713
+}

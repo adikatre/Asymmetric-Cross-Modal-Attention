@@ -1,0 +1,269 @@
+[NbConvertApp] Converting notebook /mnt/vqa-data/work/runs/frozen-gcp-20260913T163839Z/input/train_evaluate_visualize_colab_frozen_5_gcp.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+[NbConvertApp] Converting notebook /mnt/vqa-data/work/runs/frozen-gcp-20260913T163839Z/input/train_evaluate_visualize_colab_frozen_5_gcp.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+Traceback (most recent call last):
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/bin/jupyter-nbconvert", line 6, in <module>
+    sys.exit(main())
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/jupyter_core/application.py", line 284, in launch_instance
+    super().launch_instance(argv=argv, **kwargs)
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/traitlets/config/application.py", line 1080, in launch_instance
+    app.start()
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/nbconvertapp.py", line 420, in start
+    self.convert_notebooks()
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/nbconvertapp.py", line 597, in convert_notebooks
+    self.convert_single_notebook(notebook_filename)
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/nbconvertapp.py", line 563, in convert_single_notebook
+    output, resources = self.export_single_notebook(
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/nbconvertapp.py", line 487, in export_single_notebook
+    output, resources = self.exporter.from_filename(
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/exporters/exporter.py", line 201, in from_filename
+    return self.from_file(f, resources=resources, **kw)
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/exporters/exporter.py", line 220, in from_file
+    return self.from_notebook_node(
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/exporters/notebook.py", line 36, in from_notebook_node
+    nb_copy, resources = super().from_notebook_node(nb, resources, **kw)
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/exporters/exporter.py", line 154, in from_notebook_node
+    nb_copy, resources = self._preprocess(nb_copy, resources)
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/exporters/exporter.py", line 353, in _preprocess
+    nbc, resc = preprocessor(nbc, resc)
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/preprocessors/base.py", line 48, in __call__
+    return self.preprocess(nb, resources)
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/preprocessors/execute.py", line 103, in preprocess
+    self.preprocess_cell(cell, resources, index)
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/preprocessors/execute.py", line 124, in preprocess_cell
+    cell = self.execute_cell(cell, index, store_history=True)
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+    return future.result()
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+FEATURES_H5 = DATA_DIR / f"vqa_frozen_features_{FEATURE_CACHE_SHA256[:12]}.h5"
+
+if FREEZE_ENCODERS:
+    @torch.inference_mode()
+    def extract_and_save_features(image_encoder, text_encoder, dataset, split_name, h5_path,
+                                   batch_size=FEATURE_EXTRACTION_BATCH_SIZE,
+                                   num_workers=NUM_WORKERS):
+        """Resume-safe extraction of raw frozen-backbone hidden states."""
+        image_encoder.eval()
+        text_encoder.eval()
+
+        # Deterministic preprocessing is required because each item is encoded once.
+        orig_transform = dataset.transform
+        dataset.transform = get_image_transform("val")
+        n = len(dataset)
+        use_amp = USE_AMP and device.type == "cuda"
+
+        # Estimate disk usage
+        bytes_per_sample = (IMAGE_SEQ_LEN * IMAGE_HIDDEN_DIM
+                            + MAX_QUESTION_LEN * TEXT_HIDDEN_DIM) * 2  # float16
+        bytes_per_sample += MAX_QUESTION_LEN * 1 + NUM_ANSWERS * 4                         # int8 + float32
+        est_gb = n * bytes_per_sample / 1e9
+
+
+        with h5py.File(h5_path, "a") as h5f:
+            group = h5f.require_group(split_name)
+            specs = {
+                "image_features": ((n, IMAGE_SEQ_LEN, IMAGE_HIDDEN_DIM), "float16"),
+                "text_features": ((n, MAX_QUESTION_LEN, TEXT_HIDDEN_DIM), "float16"),
+                "attention_mask": ((n, MAX_QUESTION_LEN), "int8"),
+                "answer_target": ((n, NUM_ANSWERS), "float32"),
+            }
+            for name, (shape, dtype) in specs.items():
+                if name not in group:
+                    group.create_dataset(name, shape=shape, dtype=dtype)
+                elif group[name].shape != shape or str(group[name].dtype) != dtype:
+                    raise ValueError(f"Incompatible feature cache dataset: {split_name}/{name}")
+
+            idx = int(group.attrs.get("num_written", 0))
+            if bool(group.attrs.get("complete", False)) and idx == n:
+                print(f"  {split_name}: reusing {n:,} cached samples ({est_gb:.1f} GB)")
+                dataset.transform = orig_transform
+                return
+            if not 0 <= idx <= n:
+                raise ValueError(f"Invalid {split_name} feature-cache cursor: {idx}")
+
+            remaining = torch.utils.data.Subset(dataset, range(idx, n))
+            loader_kwargs = {"num_workers": num_workers, "pin_memory": device.type == "cuda"}
+            if num_workers:
+                loader_kwargs["prefetch_factor"] = PREFETCH_FACTOR
+            loader = DataLoader(remaining, batch_size=batch_size, shuffle=False, **loader_kwargs)
+            print(f"  Extracting {split_name}: {n - idx:,}/{n:,} remaining, {est_gb:.1f} GB total")
+
+            try:
+                for batch_i, (images, input_ids, attention_mask, answers) in enumerate(
+                        tqdm(loader, desc=f"  {split_name}"), start=1):
+                    images = images.to(device, non_blocking=True)
+                    input_ids = input_ids.to(device, non_blocking=True)
+                    attn_mask_dev = attention_mask.to(device, non_blocking=True)
+
+                    amp_ctx = autocast() if use_amp else nullcontext()
+                    with amp_ctx:
+                        img_feats = image_encoder.clip(pixel_values=images).last_hidden_state
+                        txt_feats = text_encoder.roberta(
+                            input_ids=input_ids, attention_mask=attn_mask_dev).last_hidden_state
+
+                    bs = images.size(0)
+                    group["image_features"][idx:idx+bs] = img_feats.cpu().half().numpy()
+                    group["text_features"][idx:idx+bs] = txt_feats.cpu().half().numpy()
+                    group["attention_mask"][idx:idx+bs] = attention_mask.numpy().astype("int8")
+                    group["answer_target"][idx:idx+bs] = answers.numpy()
+                    idx += bs
+                    if batch_i % 20 == 0:
+                        group.attrs["num_written"] = idx
+                        h5f.flush()
+                group.attrs["num_written"] = n
+                group.attrs["complete"] = True
+                h5f.flush()
+            finally:
+                dataset.transform = orig_transform
+        print(f"  {split_name}: {n:,} samples saved.")
+
+    # --- Run extraction ---
+    set_seed(SEED)
+    _img_enc = ImageEncoder(EMBED_DIM, freeze=True).to(device)
+    _txt_enc = TextEncoder(EMBED_DIM, freeze=True).to(device)
+    assert _img_enc.hidden_dim == IMAGE_HIDDEN_DIM
+    assert _txt_enc.roberta.config.hidden_size == TEXT_HIDDEN_DIM
+
+    with h5py.File(FEATURES_H5, "a") as _feature_h5:
+        stored_config = _feature_h5.attrs.get("feature_cache_sha256")
+        if stored_config is not None and stored_config != FEATURE_CACHE_SHA256:
+            raise ValueError(f"Feature cache belongs to another encoder/data configuration: {FEATURES_H5}")
+        _feature_h5.attrs["feature_cache_sha256"] = FEATURE_CACHE_SHA256
+
+    extract_and_save_features(_img_enc, _txt_enc, train_ds, "train", FEATURES_H5)
+    extract_and_save_features(_img_enc, _txt_enc, val_ds,   "val",   FEATURES_H5)
+
+    del _img_enc, _txt_enc
+    torch.cuda.empty_cache()
+
+    # Verify before any training starts.
+    with h5py.File(FEATURES_H5, "r") as f:
+        for split in ["train", "val"]:
+            if not bool(f[split].attrs.get("complete", False)):
+                raise RuntimeError(f"Incomplete feature cache split: {split}")
+            print(f"  {split}: image_features={f[f'{split}/image_features'].shape}, "
+                  f"text_features={f[f'{split}/text_features'].shape}")
+else:
+    print("FREEZE_ENCODERS=False: skipping offline feature extraction.")
+    print(f"Training will use raw {IMAGE_SIZE}px images/tokens with fully unfrozen encoders.")
+
+------------------
+
+----- stderr -----
+[transformers] [1mCLIPVisionModel LOAD REPORT[0m from: openai/clip-vit-base-patch32
+Key                                                          | Status     |  | 
+-------------------------------------------------------------+------------+--+-
+text_model.encoder.layers.{0...11}.self_attn.k_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc2.bias              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc2.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm2.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.q_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.v_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.q_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm2.bias          | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.out_proj.bias   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.v_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm1.bias          | UNEXPECTED |  | 
+logit_scale                                                  | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc1.bias              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.k_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.out_proj.weight | UNEXPECTED |  | 
+text_model.final_layer_norm.bias                             | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm1.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc1.weight            | UNEXPECTED |  | 
+visual_projection.weight                                     | UNEXPECTED |  | 
+text_model.embeddings.token_embedding.weight                 | UNEXPECTED |  | 
+text_projection.weight                                       | UNEXPECTED |  | 
+text_model.final_layer_norm.weight                           | UNEXPECTED |  | 
+text_model.embeddings.position_embedding.weight              | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+----- stderr -----
+[transformers] [1mRobertaModel LOAD REPORT[0m from: roberta-base
+Key                       | Status     | 
+--------------------------+------------+-
+lm_head.dense.bias        | UNEXPECTED | 
+lm_head.dense.weight      | UNEXPECTED | 
+lm_head.layer_norm.bias   | UNEXPECTED | 
+lm_head.layer_norm.weight | UNEXPECTED | 
+lm_head.bias              | UNEXPECTED | 
+pooler.dense.weight       | MISSING    | 
+pooler.dense.bias         | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mFileNotFoundError[0m                         Traceback (most recent call last)
+File [0;32m/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/h5py/_hl/files.py:244[0m, in [0;36mmake_fid[0;34m(name, mode, userblock_size, fapl, fcpl, swmr)[0m
+[1;32m    243[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 244[0m     fid [38;5;241m=[39m [43mh5f[49m[38;5;241;43m.[39;49m[43mopen[49m[43m([49m[43mname[49m[43m,[49m[43m [49m[43mh5f[49m[38;5;241;43m.[39;49m[43mACC_RDWR[49m[43m,[49m[43m [49m[43mfapl[49m[38;5;241;43m=[39;49m[43mfapl[49m[43m)[49m
+[1;32m    245[0m [38;5;66;03m# Not all drivers raise FileNotFoundError (commented those that do not)[39;00m
+
+File [0;32mh5py/_objects.pyx:54[0m, in [0;36mh5py._objects.with_phil.wrapper[0;34m()[0m
+
+File [0;32mh5py/_objects.pyx:55[0m, in [0;36mh5py._objects.with_phil.wrapper[0;34m()[0m
+
+File [0;32mh5py/h5f.pyx:106[0m, in [0;36mh5py.h5f.open[0;34m()[0m
+
+[0;31mFileNotFoundError[0m: [Errno 2] Unable to synchronously open file (unable to open file: name = '/mnt/vqa-data/data/vqa_frozen_features_dcfce3a81574.h5', errno = 2, error message = 'No such file or directory', flags = 1, o_flags = 2)
+
+During handling of the above exception, another exception occurred:
+
+[0;31mPermissionError[0m                           Traceback (most recent call last)
+Cell [0;32mIn[14], line 90[0m
+[1;32m     87[0m [38;5;28;01massert[39;00m _img_enc[38;5;241m.[39mhidden_dim [38;5;241m==[39m IMAGE_HIDDEN_DIM
+[1;32m     88[0m [38;5;28;01massert[39;00m _txt_enc[38;5;241m.[39mroberta[38;5;241m.[39mconfig[38;5;241m.[39mhidden_size [38;5;241m==[39m TEXT_HIDDEN_DIM
+[0;32m---> 90[0m [38;5;28;01mwith[39;00m [43mh5py[49m[38;5;241;43m.[39;49m[43mFile[49m[43m([49m[43mFEATURES_H5[49m[43m,[49m[43m [49m[38;5;124;43m"[39;49m[38;5;124;43ma[39;49m[38;5;124;43m"[39;49m[43m)[49m [38;5;28;01mas[39;00m _feature_h5:
+[1;32m     91[0m     stored_config [38;5;241m=[39m _feature_h5[38;5;241m.[39mattrs[38;5;241m.[39mget([38;5;124m"[39m[38;5;124mfeature_cache_sha256[39m[38;5;124m"[39m)
+[1;32m     92[0m     [38;5;28;01mif[39;00m stored_config [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m [38;5;129;01mand[39;00m stored_config [38;5;241m!=[39m FEATURE_CACHE_SHA256:
+
+File [0;32m/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/h5py/_hl/files.py:555[0m, in [0;36mFile.__init__[0;34m(self, name, mode, driver, libver, userblock_size, swmr, rdcc_nslots, rdcc_nbytes, rdcc_w0, track_order, fs_strategy, fs_persist, fs_threshold, fs_page_size, page_buf_size, min_meta_keep, min_raw_keep, locking, alignment_threshold, alignment_interval, meta_block_size, track_times, **kwds)[0m
+[1;32m    546[0m     fapl [38;5;241m=[39m make_fapl(driver, libver, rdcc_nslots, rdcc_nbytes, rdcc_w0,
+[1;32m    547[0m                      locking, page_buf_size, min_meta_keep, min_raw_keep,
+[1;32m    548[0m                      alignment_threshold[38;5;241m=[39malignment_threshold,
+[1;32m    549[0m                      alignment_interval[38;5;241m=[39malignment_interval,
+[1;32m    550[0m                      meta_block_size[38;5;241m=[39mmeta_block_size,
+[1;32m    551[0m                      [38;5;241m*[39m[38;5;241m*[39mkwds)
+[1;32m    552[0m     fcpl [38;5;241m=[39m make_fcpl(track_order[38;5;241m=[39mtrack_order, track_times[38;5;241m=[39mtrack_times,
+[1;32m    553[0m                      fs_strategy[38;5;241m=[39mfs_strategy, fs_persist[38;5;241m=[39mfs_persist,
+[1;32m    554[0m                      fs_threshold[38;5;241m=[39mfs_threshold, fs_page_size[38;5;241m=[39mfs_page_size)
+[0;32m--> 555[0m     fid [38;5;241m=[39m [43mmake_fid[49m[43m([49m[43mname[49m[43m,[49m[43m [49m[43mmode[49m[43m,[49m[43m [49m[43muserblock_size[49m[43m,[49m[43m [49m[43mfapl[49m[43m,[49m[43m [49m[43mfcpl[49m[43m,[49m[43m [49m[43mswmr[49m[38;5;241;43m=[39;49m[43mswmr[49m[43m)[49m
+[1;32m    557[0m [38;5;28;01mif[39;00m [38;5;28misinstance[39m(libver, [38;5;28mtuple[39m):
+[1;32m    558[0m     [38;5;28mself[39m[38;5;241m.[39m_libver [38;5;241m=[39m libver
+
+File [0;32m/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/h5py/_hl/files.py:258[0m, in [0;36mmake_fid[0;34m(name, mode, userblock_size, fapl, fcpl, swmr)[0m
+[1;32m    245[0m     [38;5;66;03m# Not all drivers raise FileNotFoundError (commented those that do not)[39;00m
+[1;32m    246[0m     [38;5;28;01mexcept[39;00m [38;5;167;01mFileNotFoundError[39;00m [38;5;28;01mif[39;00m fapl[38;5;241m.[39mget_driver() [38;5;129;01min[39;00m (
+[1;32m    247[0m         h5fd[38;5;241m.[39mSEC2,
+[1;32m    248[0m         h5fd[38;5;241m.[39mDIRECT [38;5;28;01mif[39;00m direct_vfd [38;5;28;01melse[39;00m [38;5;241m-[39m[38;5;241m1[39m,
+[0;32m   (...)[0m
+[1;32m    256[0m         h5fd[38;5;241m.[39mROS3D [38;5;28;01mif[39;00m ros3 [38;5;28;01melse[39;00m [38;5;241m-[39m[38;5;241m1[39m,
+[1;32m    257[0m     ) [38;5;28;01melse[39;00m [38;5;167;01mOSError[39;00m:
+[0;32m--> 258[0m         fid [38;5;241m=[39m [43mh5f[49m[38;5;241;43m.[39;49m[43mcreate[49m[43m([49m[43mname[49m[43m,[49m[43m [49m[43mh5f[49m[38;5;241;43m.[39;49m[43mACC_EXCL[49m[43m,[49m[43m [49m[43mfapl[49m[38;5;241;43m=[39;49m[43mfapl[49m[43m,[49m[43m [49m[43mfcpl[49m[38;5;241;43m=[39;49m[43mfcpl[49m[43m)[49m
+[1;32m    259[0m [38;5;28;01melse[39;00m:
+[1;32m    260[0m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([38;5;124m"[39m[38;5;124mInvalid mode; must be one of r, r+, w, w-, x, a[39m[38;5;124m"[39m)
+
+File [0;32mh5py/_objects.pyx:54[0m, in [0;36mh5py._objects.with_phil.wrapper[0;34m()[0m
+
+File [0;32mh5py/_objects.pyx:55[0m, in [0;36mh5py._objects.with_phil.wrapper[0;34m()[0m
+
+File [0;32mh5py/h5f.pyx:126[0m, in [0;36mh5py.h5f.create[0;34m()[0m
+
+[0;31mPermissionError[0m: [Errno 13] Unable to synchronously create file (unable to open file: name = '/mnt/vqa-data/data/vqa_frozen_features_dcfce3a81574.h5', errno = 13, error message = 'Permission denied', flags = 15, o_flags = c2)
+
+[NbConvertApp] Converting notebook /mnt/vqa-data/work/runs/frozen-gcp-20260913T163839Z/input/train_evaluate_visualize_colab_frozen_5_gcp.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+[NbConvertApp] WARNING | Wait for final termination of kernel timed out - continuing...
+[NbConvertApp] Writing 19865250 bytes to /mnt/vqa-data/work/runs/frozen-gcp-20260913T163839Z/output/train_evaluate_visualize_colab_frozen_5_gcp.executed.ipynb

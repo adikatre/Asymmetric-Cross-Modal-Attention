@@ -1,0 +1,263 @@
+[NbConvertApp] Converting notebook /mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/repo/notebooks/train_evaluate_visualize_colab_unfrozen_5_gcp_s7.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+Traceback (most recent call last):
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/bin/jupyter-nbconvert", line 6, in <module>
+    sys.exit(main())
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/jupyter_core/application.py", line 284, in launch_instance
+    super().launch_instance(argv=argv, **kwargs)
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/traitlets/config/application.py", line 1080, in launch_instance
+    app.start()
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/nbconvertapp.py", line 420, in start
+    self.convert_notebooks()
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/nbconvertapp.py", line 597, in convert_notebooks
+    self.convert_single_notebook(notebook_filename)
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/nbconvertapp.py", line 563, in convert_single_notebook
+    output, resources = self.export_single_notebook(
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/nbconvertapp.py", line 487, in export_single_notebook
+    output, resources = self.exporter.from_filename(
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/exporters/exporter.py", line 201, in from_filename
+    return self.from_file(f, resources=resources, **kw)
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/exporters/exporter.py", line 220, in from_file
+    return self.from_notebook_node(
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/exporters/notebook.py", line 36, in from_notebook_node
+    nb_copy, resources = super().from_notebook_node(nb, resources, **kw)
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/exporters/exporter.py", line 154, in from_notebook_node
+    nb_copy, resources = self._preprocess(nb_copy, resources)
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/exporters/exporter.py", line 353, in _preprocess
+    nbc, resc = preprocessor(nbc, resc)
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/preprocessors/base.py", line 48, in __call__
+    return self.preprocess(nb, resources)
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/preprocessors/execute.py", line 103, in preprocess
+    self.preprocess_cell(cell, resources, index)
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbconvert/preprocessors/execute.py", line 124, in preprocess_cell
+    cell = self.execute_cell(cell, index, store_history=True)
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+    return future.result()
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+class VQATestDataset(Dataset):
+    """VQA test split: questions + raw JPEGs from images/test2015/, no annotations."""
+
+    def __init__(self, questions_file, images_dir, max_question_len=20,
+                 transform=None, max_samples=None):
+        self.images_dir = Path(images_dir) / "test2015"
+        self.max_question_len = max_question_len
+        self.transform = transform or get_image_transform("val")
+        self.tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
+
+        with open(questions_file) as f:
+            self.samples = json.load(f)["questions"]
+        if max_samples is not None:
+            self.samples = self.samples[:max_samples]
+
+    def __len__(self):
+        return len(self.samples)
+
+    def __getitem__(self, idx):
+        sample = self.samples[idx]
+        # test-dev2015 reuses the test2015 image pool, so the filename prefix is
+        # always COCO_test2015_* regardless of which question split we loaded.
+        img_path = self.images_dir / f"COCO_test2015_{sample['image_id']:012d}.jpg"
+        image = Image.open(img_path).convert("RGB")
+        image = self.transform(image)
+
+        encoding = self.tokenizer(
+            sample["question"],
+            max_length=self.max_question_len,
+            padding="max_length",
+            truncation=True,
+            return_tensors="pt",
+        )
+        return (
+            image,
+            encoding["input_ids"].squeeze(0),
+            encoding["attention_mask"].squeeze(0),
+            sample["question_id"],
+        )
+
+
+# Use the full test2015 split (~447K questions) — required for any VQA v2
+# eval-server submission (test-dev or test-standard). For a quick local
+# sanity check during iteration, swap to v2_OpenEnded_mscoco_test-dev2015_questions.json (~107K).
+TEST_QUESTIONS_FILE = DATA_DIR / "questions" / "v2_OpenEnded_mscoco_test2015_questions.json"
+TEST_IMAGES_DIR = DATA_DIR / "images" / "test2015"
+
+# All training and evaluation results are already saved by this point, so a
+# missing test split downgrades to a skip rather than failing the whole run.
+EXPORT_TEST_PREDICTIONS = TEST_QUESTIONS_FILE.exists() and TEST_IMAGES_DIR.is_dir()
+
+if EXPORT_TEST_PREDICTIONS:
+    test_ds = VQATestDataset(
+        questions_file=TEST_QUESTIONS_FILE,
+        images_dir=DATA_DIR / "images",
+        max_question_len=MAX_QUESTION_LEN,
+        transform=get_image_transform("val"),
+        max_samples=None,  # always export the full test split, regardless of dev MAX_SAMPLES
+    )
+    test_loader = DataLoader(test_ds, batch_size=BATCH_SIZE, shuffle=False,
+                             num_workers=NUM_WORKERS, pin_memory=True)
+    print(f"Test: {len(test_ds):,} samples ({len(test_loader)} batches)")
+else:
+    print("Skipping test export — missing "
+          f"{TEST_QUESTIONS_FILE if not TEST_QUESTIONS_FILE.exists() else TEST_IMAGES_DIR}")
+
+
+@torch.no_grad()
+def predict_test(model, loader, idx_to_answer):
+    """Return [{question_id, answer}, ...] in official VQA submission format."""
+    model.eval()
+    use_amp = USE_AMP and device.type == "cuda"
+    predictions = []
+
+    for images, input_ids, attention_mask, question_ids in tqdm(loader, desc="predict"):
+        images = images.to(device)
+        input_ids = input_ids.to(device)
+        attention_mask = attention_mask.to(device)
+
+        amp_ctx = autocast() if use_amp else nullcontext()
+        with amp_ctx:
+            logits, _ = model(images, input_ids, attention_mask)
+        if not torch.isfinite(logits).all():
+            raise FloatingPointError("Non-finite test logits")
+
+        preds = logits.argmax(dim=1).cpu().tolist()
+        for qid, p in zip(question_ids.tolist(), preds):
+            predictions.append({"question_id": int(qid), "answer": idx_to_answer[int(p)]})
+
+    return predictions
+
+
+def validate_test_predictions(predictions, questions):
+    expected = [int(q["question_id"]) for q in questions]
+    ids = []
+    for item in predictions:
+        if (set(item) != {"question_id", "answer"} or type(item["question_id"]) is not int
+                or not isinstance(item["answer"], str) or not item["answer"].strip()):
+            raise ValueError("Invalid EvalAI prediction record")
+        ids.append(item["question_id"])
+    if len(expected) != len(set(expected)) or len(ids) != len(set(ids)) or set(ids) != set(expected):
+        raise ValueError("Predictions must cover every test question exactly once")
+
+
+PREDICTIONS_DIR = OUTPUT_ROOT / "predictions"
+PREDICTIONS_DIR.mkdir(parents=True, exist_ok=True)
+
+if EXPORT_TEST_PREDICTIONS:
+    if len(test_ds) != 447_793:
+        raise ValueError("Full VQA v2 test2015 export expects 447,793 questions; check the question file.")
+    for name, model in [("asymmetric", e2e_models_dict["Asymmetric"]),
+                        ("symmetric_matched", e2e_models_dict["Symmetric (parameter-matched)"])]:
+        selected = selected_runs[name]
+        preds = predict_test(model, test_loader, idx_to_answer)
+        validate_test_predictions(preds, test_ds.samples)
+        out_path = PREDICTIONS_DIR / f"{selected['run_name']}_test_predictions.json"
+        temporary = out_path.with_suffix(".json.partial")
+        temporary.write_text(json.dumps(preds))
+        temporary.replace(out_path)
+        metadata = {"model_type": name, "seed": selected["seed"], "epoch": selected["best_epoch"],
+                    "checkpoint": selected["checkpoint"], "checkpoint_sha256": file_sha256(selected["checkpoint"]),
+                    "vocab_sha256": VOCAB_SHA256, "config_sha256": CONFIG_SHA256,
+                    "questions_sha256": file_sha256(TEST_QUESTIONS_FILE),
+                    "prediction_count": len(preds), "predictions_sha256": file_sha256(out_path),
+                    "selection": "highest fixed-subset accuracy; ties use lower seed then earlier epoch"}
+        out_path.with_suffix(".metadata.json").write_text(json.dumps(metadata, indent=2))
+        print(f"Validated {len(preds):,} predictions -> {out_path}")
+        del preds
+else:
+    print("Test2015 staging/export deferred. Rerun this section when GCP test data is available.")
+
+------------------
+
+----- stdout -----
+Test: 447,793 samples (3499 batches)
+----- stderr -----
+predict:   0%|          | 0/3499 [00:00<?, ?it/s]
+----- stderr -----
+predict:   0%|          | 0/3499 [00:02<?, ?it/s]
+----- stderr -----
+
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mUnidentifiedImageError[0m                    Traceback (most recent call last)
+Cell [0;32mIn[44], line 114[0m
+[1;32m    111[0m [38;5;28;01mfor[39;00m name, model [38;5;129;01min[39;00m [([38;5;124m"[39m[38;5;124masymmetric[39m[38;5;124m"[39m, e2e_models_dict[[38;5;124m"[39m[38;5;124mAsymmetric[39m[38;5;124m"[39m]),
+[1;32m    112[0m                     ([38;5;124m"[39m[38;5;124msymmetric_matched[39m[38;5;124m"[39m, e2e_models_dict[[38;5;124m"[39m[38;5;124mSymmetric (parameter-matched)[39m[38;5;124m"[39m])]:
+[1;32m    113[0m     selected [38;5;241m=[39m selected_runs[name]
+[0;32m--> 114[0m     preds [38;5;241m=[39m [43mpredict_test[49m[43m([49m[43mmodel[49m[43m,[49m[43m [49m[43mtest_loader[49m[43m,[49m[43m [49m[43midx_to_answer[49m[43m)[49m
+[1;32m    115[0m     validate_test_predictions(preds, test_ds[38;5;241m.[39msamples)
+[1;32m    116[0m     out_path [38;5;241m=[39m PREDICTIONS_DIR [38;5;241m/[39m [38;5;124mf[39m[38;5;124m"[39m[38;5;132;01m{[39;00mselected[[38;5;124m'[39m[38;5;124mrun_name[39m[38;5;124m'[39m][38;5;132;01m}[39;00m[38;5;124m_test_predictions.json[39m[38;5;124m"[39m
+
+File [0;32m/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/torch/utils/_contextlib.py:124[0m, in [0;36mcontext_decorator.<locals>.decorate_context[0;34m(*args, **kwargs)[0m
+[1;32m    120[0m [38;5;129m@functools[39m[38;5;241m.[39mwraps(func)
+[1;32m    121[0m [38;5;28;01mdef[39;00m[38;5;250m [39m[38;5;21mdecorate_context[39m([38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs):
+[1;32m    122[0m     [38;5;66;03m# pyrefly: ignore [bad-context-manager][39;00m
+[1;32m    123[0m     [38;5;28;01mwith[39;00m ctx_factory():
+[0;32m--> 124[0m         [38;5;28;01mreturn[39;00m [43mfunc[49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
+
+Cell [0;32mIn[44], line 75[0m, in [0;36mpredict_test[0;34m(model, loader, idx_to_answer)[0m
+[1;32m     72[0m use_amp [38;5;241m=[39m USE_AMP [38;5;129;01mand[39;00m device[38;5;241m.[39mtype [38;5;241m==[39m [38;5;124m"[39m[38;5;124mcuda[39m[38;5;124m"[39m
+[1;32m     73[0m predictions [38;5;241m=[39m []
+[0;32m---> 75[0m [38;5;28;01mfor[39;00m images, input_ids, attention_mask, question_ids [38;5;129;01min[39;00m tqdm(loader, desc[38;5;241m=[39m[38;5;124m"[39m[38;5;124mpredict[39m[38;5;124m"[39m):
+[1;32m     76[0m     images [38;5;241m=[39m images[38;5;241m.[39mto(device)
+[1;32m     77[0m     input_ids [38;5;241m=[39m input_ids[38;5;241m.[39mto(device)
+
+File [0;32m/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/tqdm/std.py:1186[0m, in [0;36mtqdm.__iter__[0;34m(self)[0m
+[1;32m   1183[0m time [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39m_time
+[1;32m   1185[0m [38;5;28;01mtry[39;00m:
+[0;32m-> 1186[0m     [38;5;28;01mfor[39;00m obj [38;5;129;01min[39;00m iterable:
+[1;32m   1187[0m         [38;5;28;01myield[39;00m obj
+[1;32m   1188[0m         [38;5;66;03m# Update and possibly print the progress bar.[39;00m
+[1;32m   1189[0m         [38;5;66;03m# Note: does not call self.update(1) for speed optimisation.[39;00m
+
+File [0;32m/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/torch/utils/data/dataloader.py:725[0m, in [0;36m_BaseDataLoaderIter.__next__[0;34m(self)[0m
+[1;32m    722[0m [38;5;28;01mif[39;00m [38;5;28mself[39m[38;5;241m.[39m_sampler_iter [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[1;32m    723[0m     [38;5;66;03m# TODO(https://github.com/pytorch/pytorch/issues/76750)[39;00m
+[1;32m    724[0m     [38;5;28mself[39m[38;5;241m.[39m_reset()  [38;5;66;03m# type: ignore[call-arg][39;00m
+[0;32m--> 725[0m data [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_next_data[49m[43m([49m[43m)[49m
+[1;32m    726[0m [38;5;28mself[39m[38;5;241m.[39m_num_yielded [38;5;241m+[39m[38;5;241m=[39m [38;5;241m1[39m
+[1;32m    727[0m [38;5;28;01mif[39;00m (
+[1;32m    728[0m     [38;5;28mself[39m[38;5;241m.[39m_dataset_kind [38;5;241m==[39m _DatasetKind[38;5;241m.[39mIterable
+[1;32m    729[0m     [38;5;129;01mand[39;00m [38;5;28mself[39m[38;5;241m.[39m_IterableDataset_len_called [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m
+[1;32m    730[0m     [38;5;129;01mand[39;00m [38;5;28mself[39m[38;5;241m.[39m_num_yielded [38;5;241m>[39m [38;5;28mself[39m[38;5;241m.[39m_IterableDataset_len_called
+[1;32m    731[0m ):
+
+File [0;32m/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/torch/utils/data/dataloader.py:1531[0m, in [0;36m_MultiProcessingDataLoaderIter._next_data[0;34m(self)[0m
+[1;32m   1529[0m worker_id [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39m_task_info[38;5;241m.[39mpop(idx)[[38;5;241m0[39m]
+[1;32m   1530[0m [38;5;28mself[39m[38;5;241m.[39m_rcvd_idx [38;5;241m+[39m[38;5;241m=[39m [38;5;241m1[39m
+[0;32m-> 1531[0m [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_process_data[49m[43m([49m[43mdata[49m[43m,[49m[43m [49m[43mworker_id[49m[43m)[49m
+
+File [0;32m/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/torch/utils/data/dataloader.py:1569[0m, in [0;36m_MultiProcessingDataLoaderIter._process_data[0;34m(self, data, worker_idx)[0m
+[1;32m   1567[0m [38;5;28mself[39m[38;5;241m.[39m_try_put_index()
+[1;32m   1568[0m [38;5;28;01mif[39;00m [38;5;28misinstance[39m(data, ExceptionWrapper):
+[0;32m-> 1569[0m     [43mdata[49m[38;5;241;43m.[39;49m[43mreraise[49m[43m([49m[43m)[49m
+[1;32m   1570[0m [38;5;28;01mreturn[39;00m data
+
+File [0;32m/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/torch/_utils.py:803[0m, in [0;36mExceptionWrapper.reraise[0;34m(self)[0m
+[1;32m    799[0m [38;5;28;01mexcept[39;00m [38;5;167;01mException[39;00m:
+[1;32m    800[0m     [38;5;66;03m# If the exception takes multiple arguments or otherwise can't[39;00m
+[1;32m    801[0m     [38;5;66;03m# be constructed, don't try to instantiate since we don't know how to[39;00m
+[1;32m    802[0m     [38;5;28;01mraise[39;00m [38;5;167;01mRuntimeError[39;00m(msg) [38;5;28;01mfrom[39;00m[38;5;250m [39m[38;5;28;01mNone[39;00m
+[0;32m--> 803[0m [38;5;28;01mraise[39;00m exception
+
+[0;31mUnidentifiedImageError[0m: Caught UnidentifiedImageError in DataLoader worker process 0.
+Original Traceback (most recent call last):
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/torch/utils/data/_utils/worker.py", line 375, in _worker_loop
+    data = fetcher.fetch(index)  # type: ignore[possibly-undefined]
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 54, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 54, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/tmp/ipykernel_2403/66728666.py", line 24, in __getitem__
+    image = Image.open(img_path).convert("RGB")
+  File "/mnt/vqa-data/work/runs/unfrozen-gcp-s7-18a5316-20260913T004631Z/venv/lib/python3.10/site-packages/PIL/Image.py", line 3715, in open
+    raise UnidentifiedImageError(msg)
+PIL.UnidentifiedImageError: cannot identify image file '/mnt/vqa-data/data/images/test2015/COCO_test2015_000000377092.jpg'
+
+

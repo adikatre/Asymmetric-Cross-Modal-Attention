@@ -1,0 +1,14 @@
+Loading and preparing results...     
+DONE (t=0.60s)
+creating index...
+index created!
+Evaluating phase..
+Elapsed Time: 17.826355457305908
+{'test-dev': {'number': 45.18,
+              'other': 58.06,
+              'overall': 67.0,
+              'yes/no': 83.31}}
+{'test-standard': {'number': 45.34,
+                   'other': 58.37,
+                   'overall': 67.54,
+                   'yes/no': 83.9}}

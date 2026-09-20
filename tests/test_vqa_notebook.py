@@ -22,7 +22,7 @@ def definitions():
     notebook = json.loads(NOTEBOOK.read_text())
     cells = [''.join(c.get('source', [])) for c in notebook['cells']]
     ns = {'__name__': 'vqa_notebook_test'}
-    exec(cells[5].split('# Fast tokenizers')[0], ns)
+    exec(cells[4].split('# Fast tokenizers')[0], ns)
     ns.update(IMAGE_ENCODER_NAME='fixture', VISION_TRAINING_MODE='full', IMAGE_SIZE=32,
               IMAGE_PATCH_SIZE=16, IMAGE_SEQ_LEN=5, EMBED_DIM=16, NUM_HEADS=4, NUM_ANSWERS=3,
               DROPOUT=0.1, FREEZE_ENCODERS=True, SEED=7, SEEDS=(7, 42, 123),
@@ -31,10 +31,10 @@ def definitions():
               WARMUP_EPOCHS=1, USE_AMP=False, REPORT_TOP1000_COMPAT=True,
               ACTIVE_VISION_PROFILE='fixture', VISION_PROFILES={'fixture': {}},
               VAL_SUBSET_SEED=2026, BOOTSTRAP_SAMPLES=20, device=torch.device('cpu'))
-    for i in [2, 7, 9, 12, 15, 17, 19, 24, 26, 27, 39, 74]:
+    for i in [1, 6, 8, 11, 14, 16, 18, 23, 25, 26, 38, 73]:
         tree = ast.parse(cells[i])
         # These cells contain only definitions/constants; other cells also execute runs.
-        if i not in [2, 9, 12, 15, 17, 19, 26, 27]:
+        if i not in [1, 8, 11, 14, 16, 18, 25, 26]:
             tree.body = [node for node in tree.body if isinstance(node, (ast.FunctionDef, ast.ClassDef))]
         exec(compile(tree, f'notebook_cell_{i}', 'exec'), ns)
     return ns
@@ -251,7 +251,7 @@ class NotebookTests(unittest.TestCase):
         n['selected_runs'] = n['select_campaign_checkpoints'](runs)
         # The report cell uses persisted per-question predictions from each seed.
         notebook = json.loads(NOTEBOOK.read_text())
-        exec(''.join(notebook['cells'][39]['source']), n)
+        exec(''.join(notebook['cells'][38]['source']), n)
         self.assertEqual(n['final_training_report']['seeds_completed'], [7, 42, 123])
         selected, _ = n['load_selected_model']('asymmetric')
         data = n['train_ds'].tensors

@@ -1,0 +1,7 @@
+{
+  "classifier": "968db88591d3411b04c3eaeb4c6ae74a59befa15f1543fbb9cf45ac0116a9c92",
+  "block_0": "9546c7b6229e7bab42fc2757cc1be3782fbcadeb8a7b6d8769d9bcaad8b656f6",
+  "block_1": "0e10bd80cbc78856871cb1df4034cfd895f866fadfb8c6eb65322f16bd1aa133",
+  "image_encoder": "21c7e83ac059b74e70f395bdf7bde15a2f9c6cb38268a24af999f8686c8ac48e",
+  "text_encoder": "a4dd82ee826c77e4dd912c619dcf2683f6f7f5f75c892b87db6e9c7eb276b3c7"
+}

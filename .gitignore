@@ -21,7 +21,12 @@ venv/
 
 # Project datasets and generated artifacts
 /data/
-/outputs/
+# Keep compact reviewer artifacts under outputs/. Large test-prediction JSON files
+# remain local; their metadata and recorded EvalAI scores are committed.
+/outputs/**/predictions/*.json
+!/outputs/**/predictions/*.metadata.json
+/outputs/evalai_submissions/**/*.json
+!/outputs/evalai_submissions/**/*.metadata.json
 *.h5
 *.hdf5
 *.pt

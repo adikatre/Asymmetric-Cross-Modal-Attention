@@ -1,0 +1,13 @@
+{
+  "model_type": "symmetric_matched",
+  "seed": 7,
+  "epoch": 12,
+  "checkpoint": "/mnt/vqa-data/work/runs/frozen-gcp-20260913T163839Z/output/checkpoints/clipB32_224_frozen_top3000_directional_parallel_v1_8d4983bd4bfe_s7_symmetric_matched_best.pt",
+  "checkpoint_sha256": "04d7eb84021eeee67116b068a3129a8ad7e696881e601a0ab13dffe60c8344c4",
+  "vocab_sha256": "430e85b62d5fb626911caf1340730d92d98cf6ec5b21e4959f1af0a722f2e21a",
+  "config_sha256": "8d4983bd4bfe2bbf203de6d1d38695a3fe801efa725277cd62e81742eea052df",
+  "questions_sha256": "69169f086e0fa9f878a7425aabe6573e999af79029726b64bbf144482000960a",
+  "prediction_count": 447793,
+  "predictions_sha256": "8499c517dceba95a5dceec18922d91e5231046afc5af82cb684bf027cdf69047",
+  "selection": "highest fixed-subset accuracy; ties use lower seed then earlier epoch"
+}
