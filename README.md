@@ -1,9 +1,9 @@
-# Direction-Specific Cross-Modal Attention for VQA
+# Direction-Specific Cross-Modal Attention for VQA v2.0
 
 Code and experiment artifacts for comparing independent directional cross-attention
 with a parameter-matched symmetric control on VQA v2. Encoders are 
 ViT-B/32 and RoBERTa-base in two settings with frozen and fully fine-tuned
-encoders.
+encoders. For CLEVR and Flikr30k, the ViT-B/16 vision encoder is used. 
 
 ## Key Files
 
