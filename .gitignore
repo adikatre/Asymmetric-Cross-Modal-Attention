@@ -52,3 +52,6 @@ Thumbs.db
 docs/*.tex
 *.tex
 docs/paper/
+
+# Camera-ready paper sources (IEEE BigData 2026 HSS)
+!paper/*.tex

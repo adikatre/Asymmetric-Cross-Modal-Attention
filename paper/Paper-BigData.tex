@@ -1,0 +1,301 @@
+% Select IEEEtran's Times font encoding before the class loads (also for XeTeX).
+\RequirePackage[T1]{fontenc}
+\documentclass[conference]{IEEEtran}
+% \IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage[caption=false,font=footnotesize]{subfig}
+\usepackage{comment}
+\usepackage{textcomp}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{url}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Learning Direction-Specific Cross-Modal Interactions for Visual Question Answering}
+
+\author{\IEEEauthorblockN{Aditya Katre}
+\IEEEauthorblockA{\textit{High School Student, Del Norte High School} \\
+San Diego, United States of America \\
+adityapkatre@gmail.com}
+\and
+\IEEEauthorblockN{Hajar Homayouni}
+\IEEEauthorblockA{\textit{Department of Computer Science} \\
+\textit{San Diego State University}\\
+San Diego, United States of America \\
+hhomayouni@sdsu.edu}
+% \and
+% \IEEEauthorblockN{3\textsuperscript{rd} Given Name Surname}
+% \IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+% \textit{name of organization (of Aff.)}\\
+% City, Country \\
+% email address or ORCID}
+}
+
+\maketitle
+
+\begin{abstract}
+Multimodal representation learning requires models to fuse heterogeneous information sources, such as images and text. However, existing two-stream models make opposite choices about whether image-to-text and text-to-image interactions should share parameters, even though these directions can serve different functional roles. In this paper, we conduct a controlled test of independent cross-attention modules for each direction of multimodal exchange, enabling direction-specific representations for multimodal reasoning. We evaluate this design on VQA v2.0 against a parameter-matched symmetric baseline, including frozen-encoder experiments, multi-seed evaluation, modality-blind ablations, and question-type analysis. Modality-blind ablations show accuracy drops when either modality input is removed. Results show a modest advantage for the tested asymmetric architecture compared to a parameter-matched symmetric baseline, and that gains were positive in all six comparisons on the full validation set. Mean gains were 0.48 percentage points with frozen encoders (paired t-test, p = 0.046) and 0.23 points with fine-tuned encoders (p = 0.12, not statistically resolved). These findings suggest that direction-specific cross-modal attention has a small advantage under equal parameter counts.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Multimodal learning, Cross-modal attention, Asymmetric fusion, Vision-language reasoning, Visual question answering.
+\end{IEEEkeywords}
+
+\section{Introduction}
+Multimodal learning aims to integrate heterogeneous sources of information, or modalities, such as images, text, audio, and structured signals, into a unified representation that supports reasoning across complementary views of the same problem~\cite{baltrusaitis2019multimodal,ramachandram2017deep}. In visual question answering (VQA), an image provides visual evidence while a natural-language question specifies what information should be extracted from that image~\cite{antol2015vqa,goyal2017making}. A central challenge in multimodal representation learning is therefore how modalities should interact.
+
+Existing multimodal fusion strategies are commonly grouped into early, late, and mid-level fusion~\cite{baltrusaitis2019multimodal,ramachandram2017deep}. Early fusion combines modalities at the raw-input or low-level feature stage, which can capture fine-grained correlations but can also create high-dimensional representations and make the model sensitive to modality imbalance. Late fusion, in contrast, trains separate unimodal models and combines their predictions, which provides limited opportunity for cross-modal reasoning because interactions occur after each modality produces independent outputs. Mid-level fusion first encodes each modality independently and then learns interactions between their intermediate representations, making it suitable for tasks that require alignment between language and visual evidence.
+
+Some mid-fusion architectures, such as LXMERT~\cite{tan2019lxmert}, use symmetric interaction mechanisms, where the same transformation or shared module is applied to both directions of modality exchange. This implicitly assumes that modality $A$ attending to modality $B$ requires the same representational behavior as modality $B$ attending to modality $A$. However, modalities often have different structures and roles: text is discrete and task-specifying, while images are spatial and evidence-bearing. Thus, a question attending to an image may need to localize relevant visual regions, whereas an image attending to a question may need to identify the linguistic constraints that guide interpretation. Sharing parameters across these directions can therefore limit the model's ability to learn direction-specific relationships. ViLBERT~\cite{lu2019vilbert} instead keeps the two directions separate, but this choice has not, to our knowledge, been isolated under a fixed parameter budget.
+
+In this paper, we test this existing design choice by evaluating independent directional cross-attention modules on VQA v2.0 using pretrained image and text encoders. We compare this architecture with a symmetric control with the same parameter count.
+The main contributions of this work are as follows:
+\begin{itemize}
+\item We conduct a controlled test of an asymmetric design that models directional multimodal interactions using independent cross-attention modules rather than shared symmetric interaction weights.
+\item We evaluate both architectures across three paired seeds for frozen and fully fine-tuned encoders, and report significance tests and test results. 
+\item We examine sensitivity to removing each modality, differences across official VQA v2.0 answer types, and computational cost to examine the scope of gains.
+\end{itemize}
+
+Implementation code is available at: \url{https://github.com/adikatre/Asymmetric-Cross-Modal-Attention.git}
+
+\section{Related Work}
+ViLBERT~\cite{lu2019vilbert} extends BERT to two streams, pretrained on Conceptual Captions for transfer to VQA and other tasks, that exchange keys and values through co-attentional layers with per-stream projections. It outperforms a parameter-sharing single-stream baseline, but that baseline also changes visual depth and when the modalities interact. LXMERT~\cite{tan2019lxmert} pretrains language, object-relationship, and cross-modality encoders on five tasks, and its released code uses one module for both cross-attention directions.\footnote{See \texttt{LXRTXLayer.cross\_att} in \texttt{src/lxrt/modeling.py} of the official repository, \url{https://github.com/airsplay/lxmert}.} MCAN~\cite{yu2019deep} guides image features with question features only, and its authors report that symmetric variants did not perform comparably. BAN~\cite{kim2018ban} replaces per-modality co-attention with joint bilinear attention over every word-region pair. Unlike these, we add no new pretraining or attention mechanism and test independent against weight-tied directions at a fixed fusion parameter count.
+
+A major direction in multimodal learning is aligning different modalities in a shared embedding space. CLIP learns transferable visual representations through image-text contrastive pretraining~\cite{radford2021learning}. Cross-modal attention is widely used for aligning modalities. For example, LAVISH routes cross-modal exchange through compact latent tokens to reduce full cross-attention cost~\cite{lin2023lavish} and MutualFormer estimates cross-modal affinities through intra-modality structure to address modality gaps~\cite{hu2024mutualformer}. These approaches demonstrate the value of explicit interaction, but they do not directly test whether opposite directions, such as image-to-text and text-to-image, should share the same attention parameters.
+
+Asymmetric fusion has been explored in RGB-D semantic segmentation, remote sensing, image-text retrieval, video moment retrieval, medical VQA, and explainable VQA~\cite{du2024asymformer,aafremotesensing,ascl,asymmetricvideomoment,acma,li2025mrvqa}. These methods show that modalities can contribute unequal or direction-dependent information. However, most introduce asymmetry through task-specific designs. Thus, although effective, these approaches often couple asymmetry with domain-specific architectures, auxiliary objectives, augmentation strategies, or explanation modules.
+
+
+\section{Approach}
+
+We study an asymmetric multimodal learning design for modeling directional relationships between images and questions. Let $\mathbf{X}^{A}$ and $\mathbf{X}^{B}$ denote the image and text inputs. Each modality is encoded independently and projected into a shared latent dimension:
+\[
+\mathbf{Z}^{A}=\phi_A(E_A(\mathbf{X}^{A})), \qquad
+\mathbf{Z}^{B}=\phi_B(E_B(\mathbf{X}^{B}))
+\]
+where $E_A$ and $E_B$ are modality-specific encoders and $\phi_A$ and $\phi_B$ are learnable projections.
+\[
+\mathrm{Attn}(\mathbf{Q},\mathbf{K},\mathbf{V})
+=\mathrm{softmax}\left(\frac{\mathbf{Q}\mathbf{K}^{T}}{\sqrt{d_k}}\right)\mathbf{V},
+\]
+where $d_k$ is the key dimension. In cross-attention, the querying modality supplies $\mathbf{Q}$, while the other modality supplies $\mathbf{K}$ and $\mathbf{V}$. Each block includes learned attention projections, layer normalization, residual connections, and a feed-forward network.
+
+The asymmetric fusion module uses separate blocks, $F_A=\mathrm{CrossAttn}_{A \rightarrow B}$ and $F_B=\mathrm{CrossAttn}_{B \rightarrow A}$, to independently query each modality:
+
+\[
+\widehat{\mathbf{Z}}^{A}=F_A(\mathbf{Z}^{A},\mathbf{Z}^{B},\mathbf{Z}^{B}),\quad
+\widehat{\mathbf{Z}}^{B}=F_B(\mathbf{Z}^{B},\mathbf{Z}^{A},\mathbf{Z}^{A}),
+\]
+\noindent with arguments $(\mathbf{Q},\mathbf{K},\mathbf{V})$. The parameter sets of $F_A$ and $F_B$ are independent. Here, $\widehat{\mathbf{Z}}^A$ is the representation of modality $A$ attending to modality $B$, and $\widehat{\mathbf{Z}}^B$ is the representation of modality $B$ attending to modality $A$.
+
+Each module also returns an attention map. The attention map $\mathbf{M}_{B \rightarrow A}$ shows how strongly each token or feature in modality $B$ attends to each token or feature in modality $A$.
+
+Unlike a symmetric fusion design (see symmetric vs. asymmetric designs in Figure~\ref{sym-vs-asym}), the two cross-attention modules $\mathrm{CrossAttn}_{A \rightarrow B}$ and $\mathrm{CrossAttn}_{B \rightarrow A}$ do not share parameters. This allows each direction to learn its own query, key, value, and output transformations. As a result, the model can specialize the two directions for different functional roles.
+The attended representations are then mean-pooled, $\mathbf{r}^{A} = \mathrm{Pool}(\widehat{\mathbf{Z}}^{A})$ over image patch tokens (excluding the class token) and $\mathbf{r}^{B} = \mathrm{Pool}(\widehat{\mathbf{Z}}^{B})$ over non-padding question tokens. The final fused representation is obtained by concatenating them, $\mathbf{r}^{AB} = [\mathbf{r}^{A}; \mathbf{r}^{B}]$, and is passed to a task-specific prediction head, $\widehat{y} = g(\mathbf{r}^{AB})$.
+
+
+
+To isolate the contribution of asymmetric fusion, we compare the asymmetric model with a symmetric baseline. The parameter-matched symmetric baseline uses the same encoders, projection layers, pooling strategy, prediction head, optimizer, and training setup as the asymmetric model. Both models have two cross-attention blocks and the same number of fusion parameters (6,306,816). The symmetric baseline uses two shared cross-attention blocks: each block is applied to both image-to-text and text-to-image directions, and both outputs are averaged. The symmetric baseline uses four cross-attention calls, while the asymmetric model uses two. Therefore, the comparison focuses on the asymmetric vs. symmetric fusion, but is parameter-matched, not compute-matched. Averaging two shared blocks per direction also makes the baseline resemble a two-member ensemble of weight-tied models, which we revisit in Section~\ref{sec:limits}.
+
+\begin{figure}[!t]
+\centering
+\subfloat[Symmetric cross-modal fusion baseline.\label{fig:symmetric}]{%
+\includegraphics[width=\linewidth]{symmetric.png}}
+\par
+\subfloat[Asymmetric cross-modal fusion model.\label{fig:asymmetric}]{%
+\includegraphics[width=\linewidth]{asymmetric.png}}
+\caption{Symmetric vs. Asymmetric Cross-modal Fusion.}
+\label{sym-vs-asym}
+\end{figure}
+
+\section{Implementation}
+
+The implementation uses Vision Transformer with a patch size of 32 (CLIP ViT-B/32) for images along with RoBERTa-base for text. The CLIP ViT-B/32 encoder divides each input image into non-overlapping $32 \times 32$ patches. For a $224 \times 224$ image, this produces 49 image patch embeddings. A \texttt{[CLS]} token is then prepended to the patch sequence, resulting in 50 visual tokens. The text input is encoded using RoBERTa-base, which produces contextualized token-level representations for the input sentence or question.
+
+Before fusion, the visual and textual encoder outputs are projected into a shared 512-dimensional latent space using learnable linear projection layers.  The resulting projected visual and textual representations correspond to $\mathbf{Z}^{A}$ and $\mathbf{Z}^{B}$ above.
+
+Each CrossAttention block follows a pre-normalization Transformer-style design. Given a query sequence from one modality and key/value sequences from the other modality, the block applies multi-head cross-attention followed by a feed-forward neural network. Residual connections and dropout are used to stabilize optimization and reduce overfitting. In our implementation, each cross-attention block uses 8 attention heads.
+
+\noindent The concatenated fused representation is passed through an MLP classifier with dropout, followed by a final linear projection to the answer space. 
+
+\subsection{Hyperparameter Configuration}
+
+\begin{table}[t]
+\centering
+\caption{Hyperparameter and training configuration for VQA v2.0. Unfrozen denotes fully fine-tuning both encoders.}
+\label{tab:hparams}
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{p{0.48\columnwidth}cc}
+\hline
+\textbf{Hyperparameter} & \textbf{Frozen} & \textbf{Unfrozen} \\
+\hline
+Embedding dimension & 512 & 512 \\
+Attention heads & 8 & 8 \\
+Dropout rate & 0.1 & 0.1 \\
+Batch size & 2,048 & 128 \\
+Projection/fusion/head LR & $2\times10^{-4}$ & $2\times10^{-4}$ \\
+Encoder learning rate & N/A& $2\times10^{-6}$ \\
+Weight decay & $10^{-2}$ & $10^{-2}$ \\
+Warmup epochs & 0 & 1 \\
+Training epochs & 12 & 12 \\
+Answer vocabulary size & 3,000 & 3,000 \\
+Maximum question length & 20 tokens & 20 tokens \\
+\hline
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:hparams} summarizes the hyperparameter configuration used for the experiments. The same configuration is used for both the symmetric and asymmetric fusion models to ensure a controlled comparison. All runs used a single NVIDIA A100 GPU with 40 GB of memory. For the frozen-encoder experiments, the encoder outputs do not change across epochs, so visual and textual features are extracted offline and reused during training. The answer vocabulary is reduced to contain the 3,000 most frequent training answers. For every seed, the best epoch was selected using the official VQA v2.0 accuracy on a fixed 10,000-question validation subset, and that checkpoint was then evaluated on all 214,354 validation questions. For test submission for the hidden test set on the EvalAI leaderboard, the checkpoint with the highest subset accuracy across the three seeds was chosen for each architecture (Asymmetric/Symmetric) and encoder setting (Frozen/Unfrozen).
+
+
+\subsection{Dataset \& Evaluation Method}
+
+\noindent VQA v2.0~\cite{goyal2017making} is a visual question answering benchmark in which each example consists of an image, a natural-language question, and multiple human-provided answers.  Its images come from MS-COCO. The training, validation, and test splits contain 443,757, 214,354, and 447,793 questions for 82,783, 40,504, and 81,434 images, respectively. Every annotation also includes an \textit{answer\_type} label to denote the type of question, such as yes/no, number, or other.
+
+Evaluation uses the VQA v2.0 consensus score to account for variation among 10 human-generated annotations for each image-question pair~\cite{antol2015vqa}.  For a normalized prediction $\hat{a}$ and ten normalized human answers $a_1,\ldots,a_{10}$, the score is
+\begin{equation}
+s(\hat{a})=\frac{1}{10}\sum_{i=1}^{10}
+\min\left(1,\frac{\sum_{j\neq i}\mathbf{1}[\hat{a}=a_j]}{3}\right).
+\end{equation}
+The overall accuracy is the average question score expressed as a percentage.
+
+\section{Evaluation}
+
+\subsection{VQA Performance Across Seeds and Encoder Settings}
+
+Table~\ref{tab:vqa_answer_prediction} reports validation accuracy as a mean $\pm$ standard deviation for three seeds (7, 42, and 123). The asymmetric model achieves $59.77 \pm 0.20\%$ with frozen encoders, compared with $59.29 \pm 0.18\%$ for the Symmetric Parameter-matched (PM) baseline. With unfrozen encoders, the corresponding accuracies are $65.53 \pm 0.07\%$ and $65.30 \pm 0.09\%$. These are small mean improvements: $0.48 \pm 0.19$ percentage points with frozen encoders and $0.23 \pm 0.16$ points with fully fine-tuned, or unfrozen, encoders. The paired gain was positive for all six seed pairs (frozen: $+0.36$, $+0.70$, $+0.39$; unfrozen: $+0.12$, $+0.41$, $+0.17$). With only three seeds, however, a paired $t$-test resolves the frozen gain only marginally ($p=0.046$; 95\% CI $[+0.02,+0.94]$) and does not resolve the unfrozen gain ($p=0.12$; 95\% CI $[-0.15,+0.62]$).
+
+\begin{table}[t]
+\centering
+\caption{VQA validation accuracy (\%) on all 214,354 questions. Results are mean $\pm$ standard deviation across three paired seeds. Gain is the paired asymmetric-minus-symmetric difference in percentage points; $p$ is from a two-sided paired $t$-test.}
+\label{tab:vqa_answer_prediction}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{lcccc}
+\hline
+\textbf{Encoders} & \textbf{Symmetric} & \textbf{Asymmetric} & \textbf{Gain (pp)} & $\boldsymbol{p}$\\
+\hline
+Frozen & $59.29\pm0.18$ & $59.77\pm0.20$ & $+0.48\pm0.19$ & 0.046\\
+Unfrozen & $65.30\pm0.09$ & $65.53\pm0.07$ & $+0.23\pm0.16$ & 0.12\\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Hidden Test Dataset Results}
+
+Table~\ref{tab:vqa_test} reports final EvalAI results for the selected checkpoints. Asymmetric fusion improves test-standard accuracy from $61.29\%$ to $61.61\%$ with frozen encoders and from $67.13\%$ to $67.54\%$ with unfrozen encoders.  We chose checkpoints with the highest validation-subset scores and used them to perform inference for the hidden test dataset. These rows therefore compare best-of-three selections, sometimes from different seeds, rather than paired runs. In the unfrozen setting, both submissions are seed 42, whose symmetric run is the weakest symmetric seed on full validation and whose pair has the largest validation gain ($+0.41$ points), so the unfrozen test gain reflects one favorable pair rather than the average gain ($+0.23$ points).
+
+\begin{table}[t]
+\centering
+\caption{EvalAI VQA accuracy (\%) for individual checkpoints selected with highest validation-subset scores.}
+\label{tab:vqa_test}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{llccc}
+\hline
+\textbf{Encoders} & \textbf{Model} & \textbf{Seed} & \textbf{Test-dev} & \textbf{Test-std}\\
+\hline
+Frozen & Symmetric& 7 & 60.97 & 61.29\\
+Frozen & Asymmetric& 42 & 61.35& 61.61\\
+Unfrozen & Symmetric& 42 & 66.78 & 67.13\\
+Unfrozen & Asymmetric& 42 & 67.00& 67.54\\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Sensitivity to Removing Each Modality}
+
+We test whether the models use both modalities or rely on unimodal shortcuts. We conduct modality-blind ablations by removing one modality at a time at test time and evaluating. In the image-blind condition, the image input is set to zero (cached CLIP features when frozen; the normalized pixel tensor when unfrozen). In the text-blind condition, the question is replaced by zero features (frozen) or by a sequence of padding tokens (unfrozen), and the attention mask is set to all ones so that attention remains defined. Text-blind has a larger drop for all four settings below, but because the two conditions remove inputs differently, this difference should not be read as relative reliance on each modality.
+
+
+\begin{table}[t]
+\centering
+\small
+\caption{Modality-blind VQA accuracy (\%) on the fixed 10,000-question validation subset. Frozen seeds are 7 for Symmetric (parameter matched) and 42 for Asymmetric; both unfrozen models use seed 42.}
+\label{tab:vqa_modality_ablation}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{llcc}
+\hline
+\textbf{Encoders} & \textbf{Condition} & \textbf{Sym.-PM} & \textbf{Asym.}\\
+\hline
+Frozen & Full input & 60.62 & 61.18\\
+Frozen & Image-blind & 25.50 & 24.34\\
+Frozen & Text-blind & 12.69 & 19.83\\
+\hline
+Unfrozen & Full input & 65.92 & 66.35\\
+Unfrozen & Image-blind & 32.81 & 33.17\\
+Unfrozen & Text-blind & 25.30 & 25.09\\
+\hline
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:vqa_modality_ablation} shows major drops across all image-blind and text-blind conditions for the Symmetric Parameter Matched Baseline and the Asymmetric models. Because the models never see such inputs during training, these drops measure sensitivity to out-of-distribution inputs rather than reliance in a strict sense. Image-blind accuracies (24--33\%) are well below the 44.26\% test-standard accuracy of a question-only model trained on VQA v2.0~\cite{goyal2017making}, which suggests that the models degrade rather than fall back on language priors; retraining blind models would give a cleaner measure. With frozen encoders, the asymmetric checkpoint retains more accuracy without the question (19.83\% vs.\ 12.69\%), whereas the unfrozen pair, which shares a seed, is nearly identical. Because the frozen checkpoints come from different seeds (7 and 42), this comparison cannot separate an architectural effect from seed variation.
+
+\subsection{Answer-Type Analysis}
+
+We examine the official yes/no, number, and other answer types on test-standard split for the selected checkpoint of each model variant.
+
+\begin{table}[t]
+\centering
+\caption{Test-standard VQA accuracy (\%) by answer type
+for selected checkpoints. $\Delta$ is asymmetric minus symmetric,
+in percentage points.}
+\label{tab:vqa_answer_types}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{llrrr}
+\hline
+\textbf{Encoders} & \textbf{Type} & \textbf{Symmetric}& \textbf{Asymmetric}& $\boldsymbol{\Delta}$ \\
+\hline
+Frozen & Yes/no & 77.09 & \textbf{77.41} & +0.32 \\
+Frozen & Number & 40.57 & \textbf{41.02} & +0.45 \\
+Frozen & Other  & 52.29 & \textbf{52.57} & +0.28 \\
+\hline
+Unfrozen & Yes/no & 83.49 & \textbf{83.90} & +0.41 \\
+Unfrozen & Number & \textbf{45.60} & 45.34 & $-0.26$ \\
+Unfrozen & Other  & 57.83 & \textbf{58.37} & +0.54 \\
+\hline
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:vqa_answer_types} shows that the asymmetric model achieves higher test-standard accuracy across all three answer types with frozen encoders. The largest observed gain is for number answers, at 0.45 percentage points. With unfrozen encoders, asymmetric fusion improves yes/no and other accuracy by 0.41 and 0.54 points, respectively, while number accuracy decreases by 0.26 points.  These results describe selected checkpoints and do not establish statistically significant differences within individual answer types.
+
+\subsection{Computational Cost}
+
+The asymmetric fusion module requires half the fusion computation of the symmetric baseline (about 0.44 vs.\ 0.89 GFLOPs per example, analytic count for 50 visual and 20 question tokens). With frozen encoders, peak GPU memory was 4.5 GB (asymmetric) versus 7.9 GB (symmetric) at batch size 2,048, but epoch times were not reduced because training was bound by feature loading. With unfrozen encoders, the encoders dominate the total cost (about 12.7 vs.\ 13.2 GFLOPs per example, analytic); median asymmetric epoch times were 1--5\% shorter across seeds, and peak memory was 6.9 versus 7.1 GB.
+
+\subsection{Comparison with Large-Scale Multimodal Baselines}
+
+For context, Shen et al.~\cite{shen2022clip} report 59.14\% (Pythia) and 65.40\% (MCAN) test-dev accuracy with frozen CLIP ViT-B/32 grid features, higher-resolution inputs, and no vision-language pretraining. Our frozen-encoder test-dev accuracies (60.97--61.35\%) lie between these, and fine-tuning the encoders raises ours to 66.78--67.00\%. Directly competing with large-scale systems such as Flamingo~\cite{alayrac2022flamingo}, BLIP-2~\cite{li2023blip2}, and LLaVA~\cite{liu2023visual} is difficult under the limited computational and data resources available in this study. Our goal is therefore not to outperform large-scale foundation models, but to isolate a specific architectural question: whether opposite directions of cross-modal interaction should share parameters. By controlling the encoders, training setup, and symmetric baseline, our experiments show when direction-specific fusion is useful. 
+
+\section{Limitations and Mitigation Strategies}
+\label{sec:limits}
+
+The comparison is parameter-matched but not compute-matched. Both architectures contain 6{,}306{,}816 learned fusion parameters, so the observed accuracy differences cannot be attributed to greater fusion capacity in the asymmetric model. However, the symmetric control requires twice the fusion computation (four cross-attention calls versus two), and averaging two shared blocks per direction makes it closer to a two-member ensemble of weight-tied models than to a single weight-tied block, so part of the gap could stem from this averaging rather than from weight tying itself. Compute-matched controls, namely a single shared block (with half the parameters) and a single shared block with a learned direction embedding, were not run and are the most important next step.
+
+Three seeds resolve the frozen-encoder gain only marginally and do not resolve the fine-tuned gain, so more seeds are needed before the fine-tuned result can be considered established.
+
+
+Additionally, parameter matching establishes that the residual performance advantage cannot be explained by learned fusion capacity alone, but it does not directly identify what the two directional attention modules learn differently. Future work could compare attention entropy across directions, measure similarity between the two blocks' weights or representations, or remove one direction during training to characterize the functional specialization learned by the two directions.
+
+\section{Conclusion}
+
+This work studied whether cross-modal fusion should treat opposite directions of multimodal interaction as equivalent. We tested an asymmetric fusion design that uses independent cross-attention modules for image-to-text and text-to-image exchange, allowing each direction to learn its own role in multimodal reasoning.
+
+
+The results suggest that direction-specific cross-modal fusion provides a modest benefit for visual question answering, marginally significant with frozen encoders ($p=0.046$, three seeds) and smaller and unresolved with fine-tuned (unfrozen) encoders. Whether it stems from untying weights or from the averaging in the symmetric baseline remains open. These benefits vary across answer types. Modality-blind ablations indicate that both architectures are sensitive to removing either input. Overall, the findings support further exploration of independent directional approaches for multimodal learning, with compute-matched controls and more seeds.
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}
