@@ -32,7 +32,6 @@ venv/
 *.pt
 *.pth
 *.ckpt
-*.zip
 
 # Legacy result paths (new runs belong under outputs/)
 artifacts/
