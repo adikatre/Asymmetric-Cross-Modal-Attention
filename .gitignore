@@ -11,6 +11,7 @@ dist/
 
 # Environments and local configuration
 .venv/
+.venv-colab-data/
 venv/
 .env
 .env.*
@@ -21,6 +22,7 @@ venv/
 
 # Project datasets and generated artifacts
 /data/
+/runs/colab/
 # Keep compact reviewer artifacts under outputs/. Large test-prediction JSON files
 # remain local; their metadata and recorded EvalAI scores are committed.
 /outputs/**/predictions/*.json
